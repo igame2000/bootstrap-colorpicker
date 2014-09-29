@@ -184,9 +184,20 @@
                     return false;
                 }
                 var type = this.container && this.container[0] !== document.body ? 'position' : 'offset';
-                var offset = this.component ? this.component[type]() : this.element[type]();
+                var pop_ctrl;
+
+                if (this.component){
+                  var trigger = this.component.closest('.color-picker').find('.color-picker-trigger');
+
+                  pop_ctrl = trigger.length ? trigger : this.component;
+                } else {
+                  pop_ctrl = this.element;
+                }
+
+                var offset = pop_ctrl[type]();
+
                 this.picker.css({
-                    top: offset.top + (this.component ? this.component.outerHeight() : this.element.outerHeight()),
+                    top: offset.top + pop_ctrl.outerHeight(),
                     left: offset.left
                 });
             },
